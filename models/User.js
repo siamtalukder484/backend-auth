@@ -37,6 +37,18 @@ const userSchema = new mongoose.Schema(
       default: "",
       maxlength: [200, "Address cannot exceed 200 characters"],
     },
+    role: {
+      type: String,
+      enum: ["admin", "teacher", "student"],
+      default: "student",
+      required: [true, "Role is required"],
+    },
+    isApproved: {
+      type: Boolean,
+      default: function() {
+        return this.role === "admin";
+      },
+    },
     isEmailVerified: {
       type: Boolean,
       default: false,
