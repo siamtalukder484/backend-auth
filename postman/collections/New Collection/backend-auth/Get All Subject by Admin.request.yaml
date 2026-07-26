@@ -1,0 +1,13 @@
+$kind: http-request
+name: Get All Subject by Admin
+description: ""
+url: http://localhost:8000/api/v1/subject/get
+method: GET
+body:
+  type: json
+  content: ""
+auth:
+  type: bearer
+  credentials:
+    token: "{{supabase_service_role_api_key_0hi7}}"
+order: 4253866322194699

@@ -1,0 +1,24 @@
+$kind: http-request
+name: Subject Create by Admin
+url: http://localhost:8000/api/v1/subject/create
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"creatorId\": \"6a5cc6423eaa4f137486c130\",\r
+
+    \    \"name\": \"English\",\r
+
+    \    \"code\": \"7894\",\r
+
+    \    \"credit\": \"2\",\r
+
+    \    \"description\": \"This is English\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{supabase_service_role_api_key_0hi7}}"
+order: 3533363986159269
