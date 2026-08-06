@@ -147,7 +147,7 @@ const getTeachers = async (req, res) => {
       success: true,
       message: "Teachers retrieved successfully.",
       data: {
-        teachers: teachers.map(formatUser),
+        users: teachers.map(formatUser),
         count: teachers.length,
       },
     });
@@ -177,7 +177,7 @@ const getStudents = async (req, res) => {
       success: true,
       message: "Students retrieved successfully.",
       data: {
-        students: students.map(formatUser),
+        users: students.map(formatUser),
         count: students.length,
       },
     });
@@ -193,7 +193,9 @@ const getStudents = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const { role, status } = req.query;
-    const filter = {};
+    const filter = {
+      _id: { $ne: req.user._id },
+    };
 
     if (role && ["admin", "teacher", "student"].includes(role)) {
       filter.role = role;
