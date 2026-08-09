@@ -18,7 +18,7 @@ router.get("/verify-email/:token", authController.verifyEmail);
 router.post("/resend-verification", authController.resendVerification);
 router.post("/forgot-password", authController.forgotPassword);
 router.post("/reset-password/:token", authController.resetPassword);
-router.get("/me", limiter, protect, requireVerifiedEmail, requireApproved, authController.getMe);
+router.get("/me", protect, requireVerifiedEmail, requireApproved, authController.getMe);
 router.put("/profile", protect, requireVerifiedEmail, requireApproved, upload.single("profilePicture"), authController.updateProfile);
 
 module.exports = router;

@@ -5,9 +5,11 @@ const { requireVerifiedEmail } = require("../../middleware/authMiddleware.js");
 const subjectController = require("../../controllers/subjectController.js");
 
 router.use(protect, requireAdmin, requireVerifiedEmail);
+
 router.post("/create", subjectController.createSubject);
 router.get("/get", subjectController.getSubjects);
 router.put("/update/:id", subjectController.updateSubject);
 router.delete("/delete/:id", subjectController.deleteSubject);
+router.get("/subject-by-id/:id", subjectController.subjectById)
 
 module.exports = router;

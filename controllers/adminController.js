@@ -225,6 +225,26 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
+const getStudentById = async (req, res) => {
+  try {
+    let id = req.params
+    console.log(id)
+    const studentInfo = await User.findById(id.id)
+
+    return res.status(200).json({
+      success: true,
+      message: "students retrieved successfully.",
+      data: studentInfo,
+    });
+    
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve students.",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   getPendingUsers,
@@ -233,4 +253,5 @@ module.exports = {
   getTeachers,
   getStudents,
   getAllUsers,
+  getStudentById
 };

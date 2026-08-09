@@ -116,10 +116,29 @@ const deleteSubject = async (req, res) => {
     });
   }
 };
+const subjectById = async (req, res) => {
+  try {
+     let id = req.params
+        const subjectInfo = await Subject.findById(id.id)
+    
+        return res.status(200).json({
+          success: true,
+          message: "subject retrieved successfully.",
+          data: subjectInfo,
+        });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve subjects.",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   createSubject,
   getSubjects,
   updateSubject,
   deleteSubject,
+  subjectById
 };
