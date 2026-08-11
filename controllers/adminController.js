@@ -246,6 +246,43 @@ const getStudentById = async (req, res) => {
   }
 };
 
+
+const getApprovedStudentAndTeacher = async (req, res) => {
+  try {
+    const { role, status } = req.query;
+    const filter = {
+      _id: { $ne: req.user._id },
+    };
+
+    if (role && ["teacher", "student"].includes(role)) {
+      filter.role = role;
+    }
+
+    if (status === "approved") {
+      filter.isApproved = true;
+    } else if (status === "pending") {
+      filter.isApproved = false;
+    }
+
+    const users = await User.find(filter).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully.",
+      data: {
+        users: users.map(formatUser),
+        count: users.length,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve users.",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getPendingUsers,
   approveUser,
@@ -253,5 +290,6 @@ module.exports = {
   getTeachers,
   getStudents,
   getAllUsers,
-  getStudentById
+  getStudentById,
+  getApprovedStudentAndTeacher
 };

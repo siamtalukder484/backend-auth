@@ -7,7 +7,8 @@ const {
   getTeachers,
   getStudents,
   getAllUsers,
-  getStudentById
+  getStudentById,
+  getApprovedStudentAndTeacher
 } = require("../../controllers/adminController");
 const { protect, requireAdmin } = require("../../middleware/authMiddleware");
 
@@ -20,5 +21,6 @@ router.get("/teachers", getTeachers);
 router.get("/students", getStudents);
 router.get("/users", getAllUsers);
 router.get("/get-student/:id", getStudentById)
+router.get("/approved-user-list", getApprovedStudentAndTeacher)
 
 module.exports = router;
