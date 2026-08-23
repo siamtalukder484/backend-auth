@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:8000/api/v1/payment/checkout
+method: POST
+order: 4503585152288026
