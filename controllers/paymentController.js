@@ -100,17 +100,13 @@ const redirectToFrontend = (path) => (req, res) => {
   res.redirect(303, `${frontendUrl}${path}`);
 };
 
-// const paymentSuccess = redirectToFrontend("/payment/success");
-// const paymentFail = redirectToFrontend("/payment/fail");
-// const paymentCancel = redirectToFrontend("/payment/cancel");
-
-const paymentSuccess = (req, res) => {
-    res.redirect(303, `http://localhost:3000/payment/success`)
-}
+const paymentSuccess = redirectToFrontend("/payment/success");
+const paymentFail = redirectToFrontend("/payment/fail");
+const paymentCancel = redirectToFrontend("/payment/cancel");
 
 module.exports = {
   makePayment,
   paymentSuccess,
-//   paymentFail,
-//   paymentCancel,
+  paymentFail,
+  paymentCancel,
 };

@@ -5,17 +5,17 @@ const { requireVerifiedEmail } = require("../../middleware/authMiddleware.js");
 const {
   makePayment,
   paymentSuccess,
-//   paymentFail,
-//   paymentCancel,
+  paymentFail,
+  paymentCancel,
 } = require("../../controllers/paymentController.js");
 
 // Payment providers call these URLs without the user's JWT.
 router.post("/success", paymentSuccess);
 router.get("/success", paymentSuccess);
-// router.post("/fail", paymentFail);
-// router.get("/fail", paymentFail);
-// router.post("/cancel", paymentCancel);
-// router.get("/cancel", paymentCancel);
+router.post("/fail", paymentFail);
+router.get("/fail", paymentFail);
+router.post("/cancel", paymentCancel);
+router.get("/cancel", paymentCancel);
 
 router.use(protect, requireVerifiedEmail);
 
