@@ -17,9 +17,19 @@ const userSchema = new mongoose.Schema(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [
+        function () {
+          return !this.googleId;
+        },
+        "Password is required",
+      ],
       minlength: [8, "Password must be at least 8 characters"],
       select: false,
     },
@@ -76,7 +86,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+  if (!this.password || !this.isModified("password")) {
     return next();
   }
 

@@ -443,6 +443,30 @@ const resetPassword = async (req, res) => {
   }
 };
 
+/**
+ * Handle post-authentication callback from Google OAuth
+ * Generates a JWT access token and redirects to the frontend success page.
+ */
+const googleCallback = async (req, res) => {
+  try {
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+
+    if (!req.user) {
+      return res.redirect(`${frontendUrl}/login?error=google_auth_failed`);
+    }
+
+    // Generate JWT access token for authenticated user
+    const token = signAccessToken(req.user._id);
+
+    // Redirect to frontend Google success page with the token
+    return res.redirect(`${frontendUrl}/google-success?token=${encodeURIComponent(token)}`);
+  } catch (error) {
+    console.error("Google OAuth Callback Error:", error.message);
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+    return res.redirect(`${frontendUrl}/login?error=google_callback_failed`);
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -452,4 +476,5 @@ module.exports = {
   updateProfile,
   forgotPassword,
   resetPassword,
+  googleCallback,
 };

@@ -12,8 +12,31 @@ const limiter = rateLimit({
     message: { error: 'Too many requests, please try again later.' },
 })
 
+const passport = require("passport");
+
 router.post("/register", authController.register);
 router.post("/login", authController.login);
+
+// --- Google OAuth Routes ---
+// 1. Redirect user to Google login page
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    session: false,
+  })
+);
+
+// 2. Google OAuth callback handler
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.FRONTEND_URL || "http://localhost:3000"}/login?error=google_auth_failed`,
+    session: false,
+  }),
+  authController.googleCallback
+);
+
 router.get("/verify-email/:token", authController.verifyEmail);
 router.post("/resend-verification", authController.resendVerification);
 router.post("/forgot-password", authController.forgotPassword);

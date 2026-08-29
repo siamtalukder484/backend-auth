@@ -4,16 +4,15 @@ const express = require("express");
 const cors = require("cors");
 const dbConnection = require("./configuration/dbConnection.js");
 const { initEmailTransport } = require("./helpers/emailHelper");
+const passport = require("./configuration/passport.js");
 const routes = require("./routes");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-
-
-
 app.use(cors());
 app.use(express.json());
+app.use(passport.initialize());
 app.use(routes);
 
 app.get("/", function (req, res) {
