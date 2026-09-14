@@ -11,6 +11,25 @@ router.use(api, apiRoutes);
 // http://localhost:8000/api/v1/auth/login
 
 swaggerDocument.basePath = api;
+swaggerDocument.securityDefinitions = {
+  bearerAuth: {
+    type: 'apiKey',
+    name: 'Authorization',
+    in: 'header',
+    description: 'Enter your bearer token in the format **Bearer &lt;token&gt;**'
+  }
+}
+
+Object.entries(swaggerDocument.paths).forEach(([path, operations]) => {
+  const requirAuthentication = 
+  path === "/auth/login" || path === "/auth/profile" || path === "/adimn/" || path === "/subject/" || path === "/class/"
+  if(requirAuthentication) {
+    Object.values(operations).forEach((operation) => {
+      operation.security = [{ bearerAuth: [] }];
+    })
+  }
+
+});
 
 router.use('/api-docs', swaggerUi.serve);
 router.get('/api-docs', swaggerUi.setup(swaggerDocument));
