@@ -8,6 +8,10 @@ const api = process.env.BASE_URL;
 
 router.use(api, apiRoutes);
 
+// http://localhost:8000/api/v1/auth/login
+
+swaggerDocument.basePath = api;
+
 router.use('/api-docs', swaggerUi.serve);
 router.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
