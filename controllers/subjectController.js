@@ -35,27 +35,32 @@ const createSubject = async (req, res) => {
 };
 const getSubjects = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
-    const options = {
-      page,
-      limit,
-      sort: { createdAt: -1 },
-    };
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.max(parseInt(req.query.limit, 10) || 5, 1);
+    const skip = (page - 1) * limit;
 
-    const result = await paginate(Subject, {}, options);
+    const [subjects, totalItems] = await Promise.all([
+      Subject.find({})
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit),
+      Subject.countDocuments({}),
+    ]);
+
+    const totalPages = Math.ceil(totalItems / limit);
+
     return res.status(200).json({
       success: true,
       message: "Subjects retrieved successfully.",
       data: {
-        subjects: result.docs,
+        subjects,
         pagination: {
-          currentPage: result.page,
-          totalPages: result.totalPages,
-          totalItems: result.totalDocs,
-          itemsPerPage: result.limit,
-          hasNextPage: result.hasNextPage,
-          hasPrevPage: result.hasPrevPage,
+          currentPage: page,
+          totalPages,
+          totalItems,
+          itemsPerPage: limit,
+          hasNextPage: page < totalPages,
+          hasPrevPage: page > 1,
         },
       },
     });
